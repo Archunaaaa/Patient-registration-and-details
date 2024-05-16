@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const CreatePatient = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,10 @@ const CreatePatient = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams(); // Get the id from URL params
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,8 +27,32 @@ const CreatePatient = () => {
     });
   };
 
+  
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const response = await fetch(`https://64d60e47754d3e0f13618812.mockapi.io/form/patient_registration/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch patient details");
+        }
+        const data = await response.json();
+        setFormData(data);
+        // setLoading(false);
+      } catch (error) {
+        console.error("Error fetching patient details:", error.message);
+        // setLoading(false);
+      }
+    };
+  
+    fetchPatient(); // Call fetchPatient function inside useEffect
+  }, [id]); // Ensure useEffect runs whenever id changes
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Start loading
+    setIsLoading(true);
+
     // Validation logic
     const newErrors = {};
     if (!formData.fullname) {
@@ -35,7 +64,7 @@ const CreatePatient = () => {
     if (!formData.age) {
       newErrors.age = "Age is required";
     } else if (isNaN(formData.age) || formData.age < 0 || formData.age > 107) {
-      newErrors.age = "Please enter a valid age between 0 and 150";
+      newErrors.age = "Please enter a valid age between 0 and 107";
     }
     if (!formData.gender) {
       newErrors.gender = "Gender is required";
@@ -58,7 +87,6 @@ const CreatePatient = () => {
     } else if (!/^\d{10}$/.test(formData.emergencynumber)) {
       newErrors.emergencynumber = "Please enter a valid 10-digit emergency contact number";
     }
-    // Add other validation logic here...
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
@@ -85,20 +113,30 @@ const CreatePatient = () => {
           email: "",
           emergencynumber: ""
         });
+        navigate("/");
       } catch (error) {
         console.error("Error submitting form data:", error.message);
+      } finally {
+        // Stop loading
+        setIsLoading(false);
       }
+    } else {
+      // Stop loading if there are validation errors
+      setIsLoading(false);
     }
+    
   };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: "100vh" }}
-    >
+    <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
       <div className="card">
+        <div className=" d-flex justify-content-end ms-5 pt-4 mt-2">
+          <Link to="/">
+            <button className="btn btn-grad fw-bold text-black">Back</button>
+          </Link>
+        </div>
         <h1 className="text-center text-primary mt-4 ">Patient Registration Form</h1>
-        <form className="row mx-3 my-2" onSubmit={handleSubmit}>
+        <form className="row mx-3 my-2" >
           <div className="col-lg-6 col-md-6 d-flex flex-column content">
             <div className="mt-3 fw-bold">
               <label htmlFor="fullname ">Patient Full Name</label>
@@ -139,16 +177,42 @@ const CreatePatient = () => {
               {errors.age && <div className="text-danger">{errors.age}</div>}
             </div>
             <div className=" mt-3 fw-bold">
-              <label htmlFor="gender">Gender</label>
-              <input
-                type="text"
-                className="form-control mt-2"
-                placeholder="Enter Gender"         
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                required
-              />
+              <label>Gender</label>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Male"
+                    className=""
+                    checked={formData.gender === "Male"}
+                    onChange={handleChange}
+                    name="gender"
+                  />
+                  Male
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="Female"
+                    className="ms-2"
+                    checked={formData.gender === "Female"}
+                    onChange={handleChange}
+                    name="gender"
+                  />
+                  Female
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="Custom"
+                    className="ms-2"
+                    checked={formData.gender === "Custom"}
+                    onChange={handleChange}
+                    name="gender"
+                  />
+                  Custom
+                </label>
+              </div>
               {errors.gender && <div className="text-danger">{errors.gender}</div>}
             </div>
           </div>
@@ -210,14 +274,21 @@ const CreatePatient = () => {
             </div>
           </div>
           <div>
-            <button type="submit" className="btn-submit text-center w-25 mb-2 mt-5 fw-bold ">
+            <button type="submit" className="btn-submit text-center w-25 mb-2 mt-5 fw-bold" onClick={handleSubmit}>
               Submit
             </button>
           </div>
         </form>
+        {isLoading && (
+          <div className="text-center mt-3">
+            <div className="spinner-border text-primary" role="status">
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default CreatePatient;
+

@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PatientList from "./Components/PatientList";
-import EditPatient from "./Components/EditPatient"
+// import EditPatient from "./Components/EditPatient"
 import CreatePatient from "./Components/CreatePatient";
 
 import './App.css';
@@ -13,8 +13,7 @@ const App = () => {
        <Route exact path="/" element={<PatientList />} />
         <Route exact path="/create" element={<CreatePatient />} />
         <Route exact path="/edit/:id" element={<CreatePatient />} />
-        <Route path="/edit/:id" element={<EditPatient />} />
-
+        {/* <Route path="/edit/:id" element={<EditPatient />} /> */}
       </Routes>
     </Router>
   );

@@ -7,12 +7,14 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { Dialog } from 'primereact/dialog';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 const PatientList = () => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletePatientId, setDeletePatientId] = useState(null);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const PatientList = () => {
         throw new Error("Failed to fetch patients");
       }
       const data = await response.json();
-      setPatients(data);                                                                                                                                                                                                                
+      setPatients(data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching patients:", error.message);
@@ -38,6 +40,7 @@ const PatientList = () => {
   };
 
   const handleDelete = async () => {
+    setDeleteLoading(true);
     try {
       const response = await fetch(`https://64d60e47754d3e0f13618812.mockapi.io/form/patient_registration/${deletePatientId}`, {
         method: "DELETE",
@@ -49,6 +52,8 @@ const PatientList = () => {
       setDeleteConfirmationVisible(false);
     } catch (error) {
       console.error("Error deleting patient:", error.message);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -70,7 +75,7 @@ const PatientList = () => {
         <Column header="Action" body={(rowData) => (
           <>
             <button className="btn btn-primary btn-sm" onClick={() => handleEdit(rowData.id)}>Edit</button>
-            <button className="btn btn-danger  btn-sm ms-2 ml-2" onClick={() => {
+            <button className="btn btn-danger btn-sm ms-2" onClick={() => {
               setDeletePatientId(rowData.id);
               setDeleteConfirmationVisible(true);
             }}>Delete</button>
@@ -83,13 +88,21 @@ const PatientList = () => {
         header="Delete Patient" 
         modal
         footer={
-          <div>
-            <button className="btn btn-secondary" onClick={() => setDeleteConfirmationVisible(false)}>Cancel</button>
-            <button className="btn btn-danger ms-2" onClick={handleDelete}>Delete</button>
-          </div>
+          !deleteLoading && (
+            <div>
+              <button className="btn btn-secondary" onClick={() => setDeleteConfirmationVisible(false)}>Cancel</button>
+              <button className="btn btn-danger ms-2" onClick={handleDelete}>Delete</button>
+            </div>
+          )
         }
       >
-        <div>Are you sure you want to delete this patient?</div>
+        {deleteLoading ? (
+          <div className="p-d-flex p-jc-center p-ai-center" style={{ height: '100px' }}>
+            <ProgressSpinner />
+          </div>
+        ) : (
+          <div>Are you sure you want to delete this patient?</div>
+        )}
       </Dialog>
     </div>
   );

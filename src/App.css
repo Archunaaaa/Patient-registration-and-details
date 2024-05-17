@@ -13,9 +13,65 @@
   border: none;
   border-radius: 4px;
   cursor: pointer; 
-  margin-left: 170px;
+  margin-left: 190px;
   font-size: 15px; 
 }
 .btn-submit:hover {
   background-color: darkgreen; 
+}
+/* Media query for tablets */
+@media (max-width: 991px) {
+  .card {
+    width: 90%;
+    padding: 15px;
+  }
+  .btn-submit {
+    margin-left: 190px;
+    margin-top: 20px;
+  }
+}
+
+/* Media query for mobile devices */
+/* @media (max-width: 767px) {
+  .card {
+    width: 100%;
+    padding: 10px;
+    
+  }
+  .btn-submit {
+    margin-left: 0;
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+} */
+
+/* Media query for tablets */
+@media (max-width: 991px) {
+  .navbar-brand {
+    font-size: 18px;
+  }
+  .navbar-nav {
+    flex-direction: column;
+  }
+  .navbar-nav .nav-item {
+    margin-bottom: 10px;
+  }
+  
+}
+
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+  .navbar-brand {
+    font-size: 16px;
+  }
+  .btn-submit {
+   margin-left: 90px;
+  }
+}
+
+@media (max-width: 374px) {
+  
+  .btn-submit {
+   margin-left: 60px;
+  }
 }

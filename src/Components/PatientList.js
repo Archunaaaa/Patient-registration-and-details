@@ -59,11 +59,13 @@ const PatientList = () => {
 
   return (
     <div className="container">
-      <Link to="/create">
-        <button className="btn btn-grad fw-bold mt-5 text-success">ADD NEW</button>
-      </Link>
-      <h1 className="text-center text-danger mb-5 mt-5">Registered Patients</h1>
-      <DataTable value={patients} loading={loading}>
+      <h1 className="text-start text-danger mt-5">Patient Details</h1>
+      <div className="mb-3 text-end">
+        <Link to="/patient/create">
+          <button className="btn btn-success fw-bold">ADD NEW</button>
+        </Link>
+      </div>
+      <DataTable value={patients} loading={loading} className="custom-datatable">
         <Column field="fullname" header="Full Name" />
         <Column field="dateofbirth" header="Date of Birth" />
         <Column field="age" header="Age" />
@@ -85,7 +87,7 @@ const PatientList = () => {
       <Dialog
         visible={deleteConfirmationVisible}
         onHide={() => setDeleteConfirmationVisible(false)}
-        header="Delete Patient" 
+        header="Delete Patient"
         modal
         footer={
           !deleteLoading && (

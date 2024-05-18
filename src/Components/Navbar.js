@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid mt-2 mb-2 ms-3">
-        <Link className="navbar-brand fw-bold d-flex align-items-center" to="/">
+        <Link className="navbar-brand fw-bold d-flex align-items-center" >
           <img src={logo} alt="Patient Logo" style={{ width: '40px', height: '40px', marginRight: '10px' }} />
           PATIENT REGISTRATION
         </Link>
@@ -25,10 +25,10 @@ const Navbar = () => {
         <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link fw-bold" to="/create">Patient Registration Form</Link>
+              <Link className="nav-link fw-bold" to="/patient/create">Patient Registration Create</Link>
             </li>
             <li className="nav-item fw-bold">
-              <Link className="nav-link" to="/">Patient Details</Link>
+              <Link className="nav-link" to="/patient/view">Patient Details</Link>
             </li>
           </ul>
         </div>

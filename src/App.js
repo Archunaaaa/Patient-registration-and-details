@@ -12,8 +12,8 @@ const App = () => {
     <Router>
        <Navbar />
       <Routes>
-       <Route exact path="/" element={<PatientList />} />
-        <Route exact path="/create" element={<CreatePatient />} />
+       <Route exact path="/patient/view" element={<PatientList />} />
+        <Route exact path="/patient/create" element={<CreatePatient />} />
         <Route exact path="/edit/:id" element={<CreatePatient />} />
         {/* <Route path="/edit/:id" element={<EditPatient />} /> */}
       </Routes>

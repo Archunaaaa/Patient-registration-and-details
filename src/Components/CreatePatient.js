@@ -16,12 +16,12 @@ const CreatePatient = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the id from URL params
+  const { id } = useParams();
 
   useEffect(() => {
     if (id) {
       const fetchPatient = async () => {
-        setIsLoading(true); // Set loading to true when starting to fetch patient data
+        setIsLoading(true);
         try {
           const response = await fetch(`https://64d60e47754d3e0f13618812.mockapi.io/form/patient_registration/${id}`);
           if (!response.ok) {
@@ -32,13 +32,13 @@ const CreatePatient = () => {
         } catch (error) {
           console.error("Error fetching patient details:", error.message);
         } finally {
-          setIsLoading(false); // Set loading to false after fetching data or if there is an error
+          setIsLoading(false);
         }
       };
 
-      fetchPatient(); // Call fetchPatient function inside useEffect
+      fetchPatient();
     }
-  }, [id]); // Ensure useEffect runs whenever id changes
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,46 +48,38 @@ const CreatePatient = () => {
     });
   };
 
+  const handleReset = () => {
+    setFormData({
+      fullname: "",
+      dateofbirth: "",
+      age: "",
+      gender: "",
+      address: "",
+      phonenumber: "",
+      email: "",
+      emergencynumber: ""
+    });
+    setErrors({});
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Start loading
     setIsLoading(true);
 
-    // Validation logic
     const newErrors = {};
-    if (!formData.fullname) {
-      newErrors.fullname = "Name is required";
-    }
-    if (!formData.dateofbirth) {
-      newErrors.dateofbirth = "Date of Birth is required";
-    }
-    if (!formData.age) {
-      newErrors.age = "Age is required";
-    } else if (isNaN(formData.age) || formData.age < 0 || formData.age > 107) {
-      newErrors.age = "Please enter a valid age between 0 and 107";
-    }
-    if (!formData.gender) {
-      newErrors.gender = "Gender is required";
-    }
-    if (!formData.address) {
-      newErrors.address = "Address is required";
-    }
-    if (!formData.phonenumber) {
-      newErrors.phonenumber = "Phone Number is required";
-    } else if (!/^\d{10}$/.test(formData.phonenumber)) {
-      newErrors.phonenumber = "Please enter a valid 10-digit phone number";
-    }
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-    if (!formData.emergencynumber) {
-      newErrors.emergencynumber = "Emergency Contact is required";
-    } else if (!/^\d{10}$/.test(formData.emergencynumber)) {
-      newErrors.emergencynumber = "Please enter a valid 10-digit emergency contact number";
-    }
+    if (!formData.fullname) newErrors.fullname = "Name is required";
+    if (!formData.dateofbirth) newErrors.dateofbirth = "Date of Birth is required";
+    if (!formData.age) newErrors.age = "Age is required";
+    else if (isNaN(formData.age) || formData.age < 0 || formData.age > 107) newErrors.age = "Please enter a valid age between 0 and 107";
+    if (!formData.gender) newErrors.gender = "Gender is required";
+    if (!formData.address) newErrors.address = "Address is required";
+    if (!formData.phonenumber) newErrors.phonenumber = "Phone Number is required";
+    else if (!/^\d{10}$/.test(formData.phonenumber)) newErrors.phonenumber = "Please enter a valid 10-digit phone number";
+    if (!formData.email) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Please enter a valid email address";
+    if (!formData.emergencynumber) newErrors.emergencynumber = "Emergency Contact is required";
+    else if (!/^\d{10}$/.test(formData.emergencynumber)) newErrors.emergencynumber = "Please enter a valid 10-digit emergency contact number";
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
@@ -109,7 +101,6 @@ const CreatePatient = () => {
           throw new Error("Failed to submit form data");
         }
 
-        // Reset form data after successful submission
         setFormData({
           fullname: "",
           dateofbirth: "",
@@ -120,15 +111,13 @@ const CreatePatient = () => {
           email: "",
           emergencynumber: ""
         });
-        navigate("/");
+        navigate("/patient/view");
       } catch (error) {
         console.error("Error submitting form data:", error.message);
       } finally {
-        // Stop loading
         setIsLoading(false);
       }
     } else {
-      // Stop loading if there are validation errors
       setIsLoading(false);
     }
   };
@@ -136,13 +125,8 @@ const CreatePatient = () => {
   return (
     <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
       <div className="card mt-5 bg-light">
-        {/* <div className="d-flex justify-content-end ms-5 pt-4 mt-2">
-          <Link to="/">
-            <button className="btn btn-grad fw-bold text-black">Back</button>
-          </Link>
-        </div> */}
         <h1 className="text-center text-primary mt-4">
-          {id ? "Update Patient Details" : "Patient Registration Form"}
+          {id ? "Update Patient Details" : "Patient Registration Create"}
         </h1>
         {isLoading ? (
           <div className="text-center mt-3">
@@ -162,7 +146,7 @@ const CreatePatient = () => {
                   onChange={handleChange}
                   required
                 />
-                {errors.fullname && <div className="text-danger">{errors.fullname}</div>}
+                {errors.fullname && <p className="error-message text-danger fw-bold">{errors.fullname}</p>}
               </div>
               <div className="mt-3 fw-bold">
                 <label htmlFor="dateofbirth">Date of Birth</label>
@@ -174,7 +158,7 @@ const CreatePatient = () => {
                   onChange={handleChange}
                   required
                 />
-                {errors.dateofbirth && <div className="text-danger">{errors.dateofbirth}</div>}
+                {errors.dateofbirth && <p className="error-message text-danger fw-bold">{errors.dateofbirth}</p>}
               </div>
               <div className="mt-3 fw-bold">
                 <label htmlFor="age">Age</label>
@@ -187,7 +171,7 @@ const CreatePatient = () => {
                   onChange={handleChange}
                   required
                 />
-                {errors.age && <div className="text-danger">{errors.age}</div>}
+                {errors.age && <p className="error-message text-danger fw-bold">{errors.age}</p>}
               </div>
               <div className="mt-3 fw-bold">
                 <label>Gender<span className="text-danger">*</span></label>
@@ -225,10 +209,9 @@ const CreatePatient = () => {
                     Custom
                   </label>
                 </div>
-                {errors.gender && <div className="text-danger">{errors.gender}</div>}
+                {errors.gender && <p className="error-message text-danger fw-bold">{errors.gender}</p>}
               </div>
             </div>
-
             <div className="col-lg-6 col-md-6 d-flex flex-column content">
               <div className="mt-3 fw-bold">
                 <label htmlFor="address">Address<span className="text-danger">*</span></label>
@@ -241,7 +224,7 @@ const CreatePatient = () => {
                   onChange={handleChange}
                   required
                 />
-                {errors.address && <div className="text-danger">{errors.address}</div>}
+                {errors.address && <p className="error-message text-danger fw-bold">{errors.address}</p>}
               </div>
               <div className="mt-3 fw-bold">
                 <label htmlFor="email">E-Mail</label>
@@ -254,7 +237,7 @@ const CreatePatient = () => {
                   onChange={handleChange}
                   required
                 />
-                {errors.email && <div className="text-danger">{errors.email}</div>}
+                {errors.email && <p className="error-message text-danger fw-bold">{errors.email}</p>}
               </div>
               <div className="mt-3 fw-bold">
                 <label htmlFor="phonenumber">Phone Number<span className="text-danger">*</span></label>
@@ -267,7 +250,7 @@ const CreatePatient = () => {
                   onChange={handleChange}
                   required
                 />
-                {errors.phonenumber && <div className="text-danger">{errors.phonenumber}</div>}
+                {errors.phonenumber && <p className="error-message text-danger fw-bold">{errors.phonenumber}</p>}
               </div>
               <div className="mt-3 fw-bold">
                 <label htmlFor="emergencynumber">Emergency Contact<span className="text-danger">*</span></label>
@@ -280,12 +263,15 @@ const CreatePatient = () => {
                   onChange={handleChange}
                   required
                 />
-                {errors.emergencynumber && <div className="text-danger">{errors.emergencynumber}</div>}
+                {errors.emergencynumber && <p className="error-message text-danger fw-bold">{errors.emergencynumber}</p>}
               </div>
             </div>
-            <div>
-              <button type="submit" className="btn-submit text-center  mb-2 mt-5 fw-bold">
+            <div className="d-flex justify-content-end mt-4 mb-2">
+              <button type="submit" className="btn-submit fw-bold me-2">
                 {isLoading ? "Submitting..." : id ? "Update" : "Submit"}
+              </button>
+              <button type="button" className="btn-reset fw-bold" onClick={handleReset}>
+                Reset
               </button>
             </div>
           </form>

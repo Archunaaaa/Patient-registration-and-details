@@ -144,7 +144,6 @@ const CreatePatient = () => {
                   name="fullname"
                   value={formData.fullname}
                   onChange={handleChange}
-                  required
                 />
                 {errors.fullname && <p className="error-message text-danger fw-bold">{errors.fullname}</p>}
               </div>
@@ -156,7 +155,6 @@ const CreatePatient = () => {
                   name="dateofbirth"
                   value={formData.dateofbirth}
                   onChange={handleChange}
-                  required
                 />
                 {errors.dateofbirth && <p className="error-message text-danger fw-bold">{errors.dateofbirth}</p>}
               </div>
@@ -169,7 +167,6 @@ const CreatePatient = () => {
                   name="age"
                   value={formData.age}
                   onChange={handleChange}
-                  required
                 />
                 {errors.age && <p className="error-message text-danger fw-bold">{errors.age}</p>}
               </div>
@@ -222,7 +219,6 @@ const CreatePatient = () => {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  required
                 />
                 {errors.address && <p className="error-message text-danger fw-bold">{errors.address}</p>}
               </div>
@@ -235,7 +231,6 @@ const CreatePatient = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  required
                 />
                 {errors.email && <p className="error-message text-danger fw-bold">{errors.email}</p>}
               </div>
@@ -248,7 +243,6 @@ const CreatePatient = () => {
                   name="phonenumber"
                   value={formData.phonenumber}
                   onChange={handleChange}
-                  required
                 />
                 {errors.phonenumber && <p className="error-message text-danger fw-bold">{errors.phonenumber}</p>}
               </div>
@@ -261,7 +255,6 @@ const CreatePatient = () => {
                   name="emergencynumber"
                   value={formData.emergencynumber}
                   onChange={handleChange}
-                  required
                 />
                 {errors.emergencynumber && <p className="error-message text-danger fw-bold">{errors.emergencynumber}</p>}
               </div>

@@ -65,8 +65,8 @@ const PatientList = () => {
           <button className="btn btn-success fw-bold">ADD NEW</button>
         </Link>
       </div>
-      <DataTable value={patients} loading={loading} className="custom-datatable">
-        <Column field="fullname" header="Full Name" />
+      <DataTable value={patients} className=" rounded border border-gray-800 custom-datatable">
+        <Column field="fullname" header= "Patient Full Name" />
         <Column field="dateofbirth" header="Date of Birth" />
         <Column field="age" header="Age" />
         <Column field="gender" header="Gender" />

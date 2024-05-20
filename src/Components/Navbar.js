@@ -5,7 +5,7 @@ import logo from '../Assets/Blue MMinimalist Medical Clinic Logo.png';
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light ">
       <div className="container-fluid mt-2 mb-2 ms-3">
         <Link className="navbar-brand fw-bold d-flex align-items-center" >
           <img src={logo} alt="Patient Logo" style={{ width: '40px', height: '40px', marginRight: '10px' }} />

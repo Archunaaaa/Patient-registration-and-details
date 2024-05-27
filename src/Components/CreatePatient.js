@@ -40,12 +40,30 @@ const CreatePatient = () => {
     }
   }, [id]);
 
+  const calculateAge = (dateofbirth) => {
+    const dob = new Date(dateofbirth);
+    const diff = Date.now() - dob.getTime();
+    const ageDate = new Date(diff);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
+
+    let updatedFormData = {
       ...formData,
       [name]: value
-    });
+    };
+
+    if (name === "dateofbirth") {
+      const age = calculateAge(value);
+      updatedFormData = {
+        ...updatedFormData,
+        age: age
+      };
+    }
+
+    setFormData(updatedFormData);
   };
 
   const handleReset = () => {
@@ -167,6 +185,7 @@ const CreatePatient = () => {
                   name="age"
                   value={formData.age}
                   onChange={handleChange}
+                  readOnly
                 />
                 {errors.age && <p className="error-message text-danger fw-bold">{errors.age}</p>}
               </div>
@@ -252,20 +271,21 @@ const CreatePatient = () => {
                   type="number"
                   className="form-control mt-2"
                   placeholder="Enter Emergency Contact"
-                  name="emergencynumber"
+                  name="emergencynumber"  
                   value={formData.emergencynumber}
                   onChange={handleChange}
                 />
                 {errors.emergencynumber && <p className="error-message text-danger fw-bold">{errors.emergencynumber}</p>}
               </div>
             </div>
-            <div className="d-flex justify-content-end mt-4 mb-2">
-              <button type="submit" className="btn-submit fw-bold me-2">
-                {isLoading ? "Submitting..." : id ? "Update" : "Submit"}
-              </button>
-              <button type="button" className="btn-reset fw-bold" onClick={handleReset}>
+            <div className="d-flex justify-content-end mt-4 mb-2 w-100">
+            <button type="button" className="btn-reset me-2 fw-bold" onClick={handleReset}>
                 Reset
               </button>
+              <button type="submit" className="btn-submit fw-bold">
+                {isLoading ? "Submitting..." : id ? "Update" : "Submit"}
+              </button>
+            
             </div>
           </form>
         )}

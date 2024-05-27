@@ -71,8 +71,8 @@ const PatientList = () => {
         <Column field="age" header="Age" />
         <Column field="gender" header="Gender" />
         <Column field="address" header="Address" />
-        <Column field="phonenumber" header="Phone Number" />
         <Column field="email" header="Email" />
+        <Column field="phonenumber" header="Phone Number" />
         <Column field="emergencynumber" header="Emergency Contact" />
         <Column header="Action" body={(rowData) => (
           <>
@@ -87,7 +87,7 @@ const PatientList = () => {
       <Dialog
         visible={deleteConfirmationVisible}
         onHide={() => setDeleteConfirmationVisible(false)}
-        header="Delete Patient"
+        header="Delete Patient"                                                                                                                                                                                                                                                                                                                                     
         modal
         footer={
           !deleteLoading && (
